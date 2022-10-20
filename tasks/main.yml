@@ -65,6 +65,13 @@
   when: docker_daemon_options.keys() | length > 0
   notify: restart docker
 
+- name: Ensure /etc/systemd/system/docker.service.d directory exists.
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: 0755
+  when: docker_service_settings | length > 0
+  
 - name: Configure docker service environment.
   template:
     src: http-proxy.conf.j2
