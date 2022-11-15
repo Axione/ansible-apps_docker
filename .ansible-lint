@@ -1,4 +1,6 @@
+---
 skip_list:
-  - 'yaml'
-  - 'risky-shell-pipe'
-  - 'role-name'
+  - '106'
+  - '401'
+  - 'schema'
+  - literal-compare
