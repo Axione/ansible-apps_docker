@@ -69,6 +69,10 @@
   when: docker_service_settings | length > 0
   notify: restart docker
 
+- name: Run daemon-reload to pick up config changes
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
 - name: Ensure Docker is started and enabled at boot.
   ansible.builtin.service:
     name: docker
