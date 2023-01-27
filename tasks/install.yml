@@ -71,7 +71,7 @@
 
 - name: Run daemon-reload to pick up config changes
   ansible.builtin.systemd:
-    daemon_reload: yes
+    daemon_reload: true
 
 - name: Ensure Docker is started and enabled at boot.
   ansible.builtin.service:
