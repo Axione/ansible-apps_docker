@@ -14,11 +14,8 @@ galaxy_info:
         - "jammy"
     - name: "Debian"
       versions:
-        - "bullseye"
         - "buster"
-    - name: "RedHat"
-      versions:
-        - "Maipo"
+        - "bullseye"
     - name: "CentOS"
       versions:
         - "7"
@@ -28,6 +25,7 @@ galaxy_info:
     - name: "OracleLinux"
       versions:
         - "8"
+        - "9"
 
   galaxy_tags:
     - docker
