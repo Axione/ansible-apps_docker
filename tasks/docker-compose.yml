@@ -9,7 +9,9 @@
 - name: Set docker-compose version
   ansible.builtin.set_fact:
     docker_compose_current_version: "{{ docker_compose_vsn.stdout | regex_search('(\\d+(\\.\\d+)+)') }}"
-  when: docker_compose_vsn.stdout is defined
+  when: >
+    docker_compose_vsn.stdout is defined
+    and (docker_compose_vsn.stdout | length > 0)
 
 - name: Delete existing docker-compose version if it's different.
   ansible.builtin.file:
@@ -26,5 +28,5 @@
     mode: 0755
   when: >
     (docker_compose_current_version is not defined)
-    or (docker_compose_current_version|length == 0)
+    or (docker_compose_current_version | length == 0)
     or (docker_compose_current_version is version((docker_compose_version | regex_replace('v', '')), '<'))
