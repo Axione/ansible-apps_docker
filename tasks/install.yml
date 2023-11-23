@@ -9,6 +9,10 @@
   ansible.builtin.package:
     name: "{{ docker_packages }}"
     state: "{{ docker_packages_state }}"
+  register: pkg_result
+  retries: 12
+  delay: 10
+  until: pkg_result is success
   notify: restart docker
   ignore_errors: "{{ ansible_check_mode }}"
   when: "ansible_version.full is version_compare('2.12', '<') or ansible_os_family not in ['RedHat', 'Debian']"
@@ -18,6 +22,10 @@
     name: "{{ docker_packages }}"
     state: "{{ docker_packages_state }}"
     allow_downgrade: true
+  register: pkg_result
+  retries: 12
+  delay: 10
+  until: pkg_result is success
   notify: restart docker
   ignore_errors: "{{ ansible_check_mode }}"
   when: "ansible_version.full is version_compare('2.12', '>=') and ansible_os_family in ['RedHat', 'Debian']"
@@ -26,6 +34,10 @@
   ansible.builtin.package:
     name: "{{ docker_compose_package }}"
     state: "{{ docker_compose_package_state }}"
+  register: pkg_result
+  retries: 12
+  delay: 10
+  until: pkg_result is success
   notify: restart docker
   ignore_errors: "{{ ansible_check_mode }}"
   when: "docker_install_compose_plugin | bool == true and (ansible_version.full is version_compare('2.12', '<') or ansible_os_family not in ['RedHat', 'Debian'])"
@@ -35,6 +47,10 @@
     name: "{{ docker_compose_package }}"
     state: "{{ docker_compose_package_state }}"
     allow_downgrade: true
+  register: pkg_result
+  retries: 12
+  delay: 10
+  until: pkg_result is success
   notify: restart docker
   ignore_errors: "{{ ansible_check_mode }}"
   when: "docker_install_compose_plugin | bool == true and ansible_version.full is version_compare('2.12', '>=') and ansible_os_family in ['RedHat', 'Debian']"
