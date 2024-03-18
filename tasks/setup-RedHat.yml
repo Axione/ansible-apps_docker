@@ -47,6 +47,7 @@
   when: docker_add_repo | bool
 
 - name: Configure containerd on RHEL 8.
+  when: ansible_distribution_major_version | int == 8
   block:
     - name: Ensure runc is not installed.
       ansible.builtin.package:
@@ -74,4 +75,3 @@
       retries: 12
       delay: 10
       until: pkg_result is success
-  when: ansible_distribution_major_version | int == 8

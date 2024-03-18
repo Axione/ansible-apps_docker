@@ -1,8 +1,10 @@
 ---
-- include_tasks: setup-RedHat.yml
+- name: Redhat Taks
+  ansible.builtin.include_tasks: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
-- include_tasks: setup-Debian.yml
+- name: Debian tasks
+  ansible.builtin.include_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Install Docker packages.
@@ -13,7 +15,7 @@
   retries: 12
   delay: 10
   until: pkg_result is success
-  notify: restart docker
+  notify: Restart docker
   ignore_errors: "{{ ansible_check_mode }}"
   when: "ansible_version.full is version_compare('2.12', '<') or ansible_os_family not in ['RedHat', 'Debian']"
 
@@ -26,7 +28,7 @@
   retries: 12
   delay: 10
   until: pkg_result is success
-  notify: restart docker
+  notify: Restart docker
   ignore_errors: "{{ ansible_check_mode }}"
   when: "ansible_version.full is version_compare('2.12', '>=') and ansible_os_family in ['RedHat', 'Debian']"
 
@@ -38,7 +40,7 @@
   retries: 12
   delay: 10
   until: pkg_result is success
-  notify: restart docker
+  notify: Restart docker
   ignore_errors: "{{ ansible_check_mode }}"
   when: "docker_install_compose_plugin | bool == true and (ansible_version.full is version_compare('2.12', '<') or ansible_os_family not in ['RedHat', 'Debian'])"
 
@@ -51,7 +53,7 @@
   retries: 12
   delay: 10
   until: pkg_result is success
-  notify: restart docker
+  notify: Restart docker
   ignore_errors: "{{ ansible_check_mode }}"
   when: "docker_install_compose_plugin | bool == true and ansible_version.full is version_compare('2.12', '>=') and ansible_os_family in ['RedHat', 'Debian']"
 
@@ -68,7 +70,7 @@
     dest: /etc/docker/daemon.json
     mode: 0644
   when: docker_daemon_options.keys() | length > 0
-  notify: restart docker
+  notify: Restart docker
 
 - name: Ensure /etc/systemd/system/docker.service.d directory exists.
   ansible.builtin.file:
@@ -83,7 +85,7 @@
     dest: /etc/systemd/system/docker.service.d/http-proxy.conf
     mode: 0644
   when: docker_service_settings | length > 0
-  notify: restart docker
+  notify: Restart docker
 
 - name: Run daemon-reload to pick up config changes
   ansible.builtin.systemd:
@@ -100,7 +102,8 @@
 - name: Ensure handlers are notified now to avoid firewall conflicts.
   ansible.builtin.meta: flush_handlers
 
-- include_tasks: docker-compose.yml
+- name: Docker compase install
+  ansible.builtin.include_tasks: docker-compose.yml
   when: docker_install_compose | bool
 
 - name: Get docker group info using getent.
@@ -118,5 +121,6 @@
     - item not in ansible_facts.getent_group["docker"][2]
   with_items: "{{ docker_users }}"
 
-- include_tasks: docker-users.yml
+- name: Create users
+  ansible.builtin.include_tasks: docker-users.yml
   when: at_least_one_user_to_modify is defined
