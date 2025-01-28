@@ -12,6 +12,7 @@ galaxy_info:
         - "focal"
         - "bionic"
         - "jammy"
+        - "noble"
     - name: "Debian"
       versions:
         - "buster"
