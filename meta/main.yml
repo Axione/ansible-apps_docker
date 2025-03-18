@@ -4,14 +4,14 @@ galaxy_info:
   role_name: apps_docker
   description: "Deploy [docker](https://docker.io) with proxy support using ansible. (forked from https://galaxy.ansible.com/geerlingguy/docker)"
   license: "Apache License, Version 2.0"
-  min_ansible_version: 2.8
+  min_ansible_version: "2.8"
 
   platforms:
     - name: "Ubuntu"
       versions:
         - "focal"
-        - "bionic"
         - "jammy"
+        - "noble"
     - name: "Debian"
       versions:
         - "buster"
@@ -20,7 +20,12 @@ galaxy_info:
     - name: "Rocky"
       versions:
         - "8"
+        - "9"
     - name: "OracleLinux"
+      versions:
+        - "8"
+        - "9"
+    - name: "RedHat"
       versions:
         - "8"
         - "9"
